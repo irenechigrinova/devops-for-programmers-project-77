@@ -2,3 +2,4 @@ terraform/.terraform
 terraform/*.backup
 terraform/*.auto.tfvars
 terraform/terraform.tfstate
+terraform/data.txt

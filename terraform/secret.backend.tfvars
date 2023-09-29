@@ -1,0 +1,5 @@
+bucket = "tfbacket"
+access_key = "YCAJEbtf8hDMnuX8XpyEQuXUN"
+secret_key = "YCPJJjjdtm-W2ED0HMgpSoiMvfFqNPlMGvaCBq3Y"
+dynamodb_endpoint = "https://docapi.serverless.yandexcloud.net/ru-central1/b1g1d4gp9asak067qdt1/etndbp5govb97osje44q"
+dynamodb_table = "lock"
