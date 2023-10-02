@@ -3,3 +3,5 @@ terraform/*.backup
 terraform/*.auto.tfvars
 terraform/terraform.tfstate
 terraform/data.txt
+
+ansible/group-vars/tf_ansible_vars.yml

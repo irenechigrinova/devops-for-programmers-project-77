@@ -1,0 +1,100 @@
+- name: Install packages
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check mandatory variables imported from Terraform
+      assert:
+        that:
+          - app_port is defined
+          - db_host is defined
+          - db_username is defined
+          - db_password is defined
+          - db_name is defined
+          - dd_api_key is defined
+          - vm1_ip is defined
+          - vm2_ip is defined
+          - vm1_user is defined
+          - vm2_user is defined
+        fail_msg: "variable usually defined in '.group_vars/all/tf_ansible_vars.yml' is missing"
+
+    - name: update cache
+      ansible.builtin.apt:
+        update_cache: true
+      tags: packages
+
+    - name: Install pip
+      ansible.builtin.include_role:
+        name: geerlingguy.pip
+      tags: packages
+
+- name: Set env file
+  hosts: all
+  become: yes
+  tasks:
+    - name: copy env file
+      ansible.builtin.template:
+        src: ./templates/.env.j2
+        dest: /.env
+      tags: app
+
+- name: Deploy app
+  hosts: all
+  become: yes
+  tasks:
+    - name: install docker
+      apt:
+        name: "{{item}}"
+        state: present
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+    - name: add GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: add docker repo to apt
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+    - name: install docker
+      apt:
+        name: "{{item}}"
+        state: latest
+        update_cache: yes
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+    - name: run app in docker
+      community.docker.docker_container:
+        name: app
+        image: "redmine:{{ redmine_version }}"
+        published_ports: "{{ app_port }}:3000"
+        restart_policy: always
+        restart: true
+        pull: true
+        env_file: /.env
+      tags: app
+
+- name: Setup Datadog Agent
+  hosts: webservers
+  roles:
+    - { role: datadog.datadog, become: yes }
+  tags: datadog
+  vars:
+    datadog_api_key: "{{ dd_api_key }}"
+    datadog_checks:
+      http_check:
+        init_config:
+        instances:
+          - name: Datadog watch
+            url: "http://localhost:{{ app_port }}"
+            method: POST
+    datadog_config:
+      log_level: INFO
+      dogstatsd_non_local_traffic: true
+      bind_host: 0.0.0.0

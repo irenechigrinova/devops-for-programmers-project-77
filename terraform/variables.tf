@@ -37,3 +37,9 @@ variable "db_password" {
     type = string
     sensitive = true
 }
+
+variable "dd_api_key" {
+    description = "datadog api key"
+    type = string
+    sensitive = true
+}
