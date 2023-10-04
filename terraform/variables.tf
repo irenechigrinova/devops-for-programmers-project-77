@@ -43,3 +43,9 @@ variable "dd_api_key" {
     type = string
     sensitive = true
 }
+
+variable "dd_app_key" {
+    description = "datadog app key"
+    type = string
+    sensitive = true
+}

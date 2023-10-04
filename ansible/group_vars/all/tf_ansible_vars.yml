@@ -4,14 +4,14 @@
 app_port: 80
 redmine_version: latest
     
-db_host: rc1a-xuqxn13y4w8vr0lg.mdb.yandexcloud.net
+db_host: rc1a-1hfqq4qdewwjcfst.mdb.yandexcloud.net
 db_username: redmine
 db_password: qwerty76
 db_name: redmine-db
 
-dd_api_key: 7b53347c9023677e0681441f91546d1d
+dd_api_key: 49c1574170584f1fc84fdf26bf72e3ec
 
-vm1_ip: 158.160.123.149
-vm2_ip: 84.252.128.100
+vm1_ip: 158.160.122.173
+vm2_ip: 158.160.8.144
 vm1_user: ubuntu
 vm2_user: ubuntu

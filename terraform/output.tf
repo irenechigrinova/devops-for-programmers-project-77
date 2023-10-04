@@ -1,25 +1,13 @@
-output "internal_ip_address_vm_1" {
-  value = yandex_compute_instance.vm-1.network_interface.0.ip_address
-}
-
-output "internal_ip_address_vm_2" {
-  value = yandex_compute_instance.vm-2.network_interface.0.ip_address
-}
-
-output "external_ip_address_vm_1" {
-  value = yandex_compute_instance.vm-1.network_interface.0.nat_ip_address
-}
-
-output "external_ip_address_vm_2" {
-    value = yandex_compute_instance.vm-2.network_interface.0.nat_ip_address
-}
-
 output "balancer_ip" {
-    value = yandex_alb_load_balancer.balancer.listener[0].endpoint[0].address[0].external_ipv4_address[0].address
+    value = yandex_alb_load_balancer.alb-1.listener[0].endpoint[0].address[0].external_ipv4_address[0].address
 }
 
-output "db_host" {
-    value = yandex_mdb_postgresql_cluster.db-cluster.host.0.fqdn
+output "instance_1_external_ip" {
+  value = yandex_compute_instance_group.alb-vm-group.instances.*.network_interface.0.nat_ip_address[0]
+}
+
+output "instance_2_external_ip" {
+  value = yandex_compute_instance_group.alb-vm-group.instances.*.network_interface.0.nat_ip_address[1]
 }
 
 resource "local_file" "tf_ansible_vars" {
@@ -37,8 +25,8 @@ resource "local_file" "tf_ansible_vars" {
 
     dd_api_key: ${var.dd_api_key}
 
-    vm1_ip: ${yandex_compute_instance.vm-1.network_interface.0.nat_ip_address}
-    vm2_ip: ${yandex_compute_instance.vm-2.network_interface.0.nat_ip_address}
+    vm1_ip: ${yandex_compute_instance_group.alb-vm-group.instances.*.network_interface.0.nat_ip_address[0]}
+    vm2_ip: ${yandex_compute_instance_group.alb-vm-group.instances.*.network_interface.0.nat_ip_address[1]}
     vm1_user: ubuntu
     vm2_user: ubuntu
     DOC

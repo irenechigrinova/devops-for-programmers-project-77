@@ -29,4 +29,7 @@ resource "yandex_mdb_postgresql_database" "db" {
   cluster_id = yandex_mdb_postgresql_cluster.db-cluster.id
   name       = var.db_name
   owner      = yandex_mdb_postgresql_user.redmine-user.name
+  depends_on = [
+    yandex_mdb_postgresql_user.redmine-user
+  ]
 }

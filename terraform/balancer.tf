@@ -1,79 +1,72 @@
-resource "yandex_alb_target_group" "balancer-target-group" {
-  name = "balancer-target-group"
-
-  target {
-    subnet_id = yandex_vpc_subnet.subnet-1.id
-    ip_address = yandex_compute_instance.vm-1.network_interface.0.ip_address
-  }
-
-  target {
-    subnet_id = yandex_vpc_subnet.subnet-1.id
-    ip_address = yandex_compute_instance.vm-2.network_interface.0.ip_address
-  }
-}
-
-resource "yandex_alb_backend_group" "balancer-backend-group" {
-  name = "balancer-backend-group"
+resource "yandex_alb_backend_group" "alb-bg" {
+  name                     = "alb-bg"
 
   http_backend {
-    name = "balancer-http-backend"
-    weight = 1
-    port = var.app_port
-    target_group_ids = [yandex_alb_target_group.balancer-target-group.id]
-    load_balancing_config {
-      panic_threshold = 50
-    }
+    name                   = "backend-1"
+    port                   = 80
+    target_group_ids       = [yandex_compute_instance_group.alb-vm-group.application_load_balancer.0.target_group_id]
     healthcheck {
-      timeout = "1s"
-      interval = "1s"
+      timeout              = "10s"
+      interval             = "2s"
+      healthcheck_port     = 80
       http_healthcheck {
-        path = "/"
+        path               = "/"
       }
     }
   }
 }
 
-resource "yandex_alb_http_router" "balancer-router" {
-  name = "balancer-router"
+resource "yandex_alb_http_router" "alb-router" {
+  name   = "alb-router"
 }
 
-resource "yandex_alb_load_balancer" "balancer" {
-  name = "balancer"
-  network_id = yandex_vpc_network.network-1.id
+resource "yandex_alb_virtual_host" "alb-host" {
+  name           = "alb-host"
+  http_router_id = yandex_alb_http_router.alb-router.id
+  route {
+    name = "route-1"
+    http_route {
+      http_route_action {
+        backend_group_id = yandex_alb_backend_group.alb-bg.id
+      }
+    }
+  }
+}
+
+resource "yandex_alb_load_balancer" "alb-1" {
+  name               = "alb-1"
+  network_id         = yandex_vpc_network.network-1.id
+  security_group_ids = [yandex_vpc_security_group.alb-sg.id]
+
   allocation_policy {
     location {
-      zone_id = "ru-central1-a"
+      zone_id   = "ru-central1-a"
       subnet_id = yandex_vpc_subnet.subnet-1.id
+    }
+
+    location {
+      zone_id   = "ru-central1-b"
+      subnet_id = yandex_vpc_subnet.subnet-2.id
+    }
+
+    location {
+      zone_id   = "ru-central1-c"
+      subnet_id = yandex_vpc_subnet.subnet-3.id
     }
   }
 
   listener {
-    name = "balancer-listener"
+    name = "alb-listener"
     endpoint {
       address {
         external_ipv4_address {
         }
       }
-      ports = [80]
+      ports = [ 80 ]
     }
     http {
       handler {
-        http_router_id = yandex_alb_http_router.balancer-router.id
-      }
-    }
-  }
-
-}
-
-resource "yandex_alb_virtual_host" "balancer-virtual-host" {
-  name = "balancer-virtual-host"
-  http_router_id = yandex_alb_http_router.balancer-router.id
-  route {
-    name = "balancer-router"
-    http_route {
-      http_route_action {
-        backend_group_id = yandex_alb_backend_group.balancer-backend-group.id
-        timeout = "5s"
+        http_router_id = yandex_alb_http_router.alb-router.id
       }
     }
   }
