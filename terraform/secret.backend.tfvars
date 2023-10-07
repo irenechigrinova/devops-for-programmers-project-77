@@ -1,5 +1,0 @@
-bucket = "yc-terraform-state-bucket"
-access_key = "YCAJEF1Ba9BbuG5aFJRZHRMJ5"
-secret_key = "YCMpZwH-pTMYfhpdJGFSmtw0lQOcRsMVmwK4rkCM"
-dynamodb_endpoint = "https://docapi.serverless.yandexcloud.net/ru-central1/b1g1d4gp9asak067qdt1/etndbp5govb97osje44q"
-dynamodb_table = "lock"
