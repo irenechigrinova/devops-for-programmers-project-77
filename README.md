@@ -13,3 +13,5 @@
     ```export ACCESS_KEY = <value>```
     ```export SECRET_KEY = <value>```
 - Run make init, using provided credentials
+
+Use commands from Makefile to manage the infrastructure

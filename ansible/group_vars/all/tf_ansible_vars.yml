@@ -11,7 +11,7 @@ db_name: redmine-db
 
 dd_api_key: 49c1574170584f1fc84fdf26bf72e3ec
 
-vm1_ip: 158.160.122.173
-vm2_ip: 158.160.8.144
+vm1_ip: 130.193.43.43
+vm2_ip: 158.160.127.216
 vm1_user: ubuntu
 vm2_user: ubuntu

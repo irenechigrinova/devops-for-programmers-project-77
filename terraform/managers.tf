@@ -57,4 +57,10 @@ resource "yandex_vpc_security_group" "alb-vm-sg" {
     v4_cidr_blocks = ["0.0.0.0/0"]
     port           = 22
   }
+
+  egress {
+    protocol       = "ANY"
+    description    = "any"
+    v4_cidr_blocks = ["0.0.0.0/0"]
+  }
 }
