@@ -20,7 +20,7 @@ resource "yandex_compute_instance_group" "alb-vm-group" {
       initialize_params {
         image_id = yandex_compute_image.lemp.id
         type     = "network-hdd"
-        size     = 3
+        size     = 10
       }
     }
 
