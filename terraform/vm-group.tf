@@ -26,13 +26,13 @@ resource "yandex_compute_instance_group" "alb-vm-group-2" {
 
     network_interface {
       network_id         = yandex_vpc_network.network-1.id
-      subnet_ids         = [yandex_vpc_subnet.subnet-1.id,yandex_vpc_subnet.subnet-2.id,yandex_vpc_subnet.subnet-3.id]
+      subnet_ids         = [yandex_vpc_subnet.subnet-1.id, yandex_vpc_subnet.subnet-2.id, yandex_vpc_subnet.subnet-3.id]
       nat                = true
       security_group_ids = [yandex_vpc_security_group.alb-vm-sg.id]
     }
 
     metadata = {
-      user-data = "#cloud-config\nusers:\n  - name: ubuntu\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${file("${ var.ssh_key }")}"
+      user-data = "#cloud-config\nusers:\n  - name: ubuntu\n    groups: sudo\n    shell: /bin/bash\n    sudo: ['ALL=(ALL) NOPASSWD:ALL']\n    ssh-authorized-keys:\n      - ${file("${var.ssh_key}")}"
     }
   }
 
