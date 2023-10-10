@@ -49,3 +49,8 @@ variable "dd_app_key" {
   type        = string
   sensitive   = true
 }
+
+variable "ssh_key" {
+  description = "path to ssh key"
+  type        = string
+}
