@@ -34,7 +34,7 @@
   tasks:
     - name: copy env file
       ansible.builtin.template:
-        src: ./templates/.env.j2
+        src: templates/.env.j2
         dest: /.env
       tags: app
 

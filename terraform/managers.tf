@@ -1,5 +1,5 @@
 resource "yandex_iam_service_account" "ig-sa" {
-  name        = "ig-sa"
+  name = "ig-sa"
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "editor" {
@@ -9,8 +9,8 @@ resource "yandex_resourcemanager_folder_iam_member" "editor" {
 }
 
 resource "yandex_vpc_security_group" "alb-sg" {
-  name        = "alb-sg"
-  network_id  = yandex_vpc_network.network-1.id
+  name       = "alb-sg"
+  network_id = yandex_vpc_network.network-1.id
 
   egress {
     protocol       = "ANY"
@@ -41,8 +41,8 @@ resource "yandex_vpc_security_group" "alb-sg" {
 }
 
 resource "yandex_vpc_security_group" "alb-vm-sg" {
-  name        = "alb-vm-sg"
-  network_id  = yandex_vpc_network.network-1.id
+  name       = "alb-vm-sg"
+  network_id = yandex_vpc_network.network-1.id
 
   ingress {
     protocol          = "TCP"

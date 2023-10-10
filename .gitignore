@@ -4,5 +4,6 @@ terraform/*.auto.tfvars
 terraform/*.backend.tfvars
 terraform/terraform.tfstate
 terraform/data.txt
+terraform/.terraform.lock.hcl
 
 ansible/group-vars/all/tf_ansible_vars.yml

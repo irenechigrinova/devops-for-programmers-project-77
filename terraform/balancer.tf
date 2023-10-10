@@ -1,23 +1,23 @@
 resource "yandex_alb_backend_group" "alb-bg" {
-  name                     = "alb-bg"
+  name = "alb-bg"
 
   http_backend {
-    name                   = "backend-1"
-    port                   = 80
-    target_group_ids       = [yandex_compute_instance_group.alb-vm-group.application_load_balancer.0.target_group_id]
+    name             = "backend-1"
+    port             = 80
+    target_group_ids = [yandex_compute_instance_group.alb-vm-group-2.application_load_balancer.0.target_group_id]
     healthcheck {
-      timeout              = "10s"
-      interval             = "2s"
-      healthcheck_port     = 80
+      timeout          = "10s"
+      interval         = "2s"
+      healthcheck_port = 80
       http_healthcheck {
-        path               = "/"
+        path = "/"
       }
     }
   }
 }
 
 resource "yandex_alb_http_router" "alb-router" {
-  name   = "alb-router"
+  name = "alb-router"
 }
 
 resource "yandex_alb_virtual_host" "alb-host" {
@@ -62,7 +62,7 @@ resource "yandex_alb_load_balancer" "alb-1" {
         external_ipv4_address {
         }
       }
-      ports = [ 80 ]
+      ports = [80]
     }
     http {
       handler {

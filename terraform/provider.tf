@@ -11,8 +11,8 @@ terraform {
 }
 
 provider "yandex" {
-  zone = "ru-central1-a"
-  token = var.yc_token
+  zone      = "ru-central1-a"
+  token     = var.yc_token
   folder_id = var.folder_id
 }
 
